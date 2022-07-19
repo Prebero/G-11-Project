@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->unsignedInteger('age');
+            $table->enum('gender',['female','male']);
+            $table->enum('status',['active','blocked','deleted'])->default('active');
+            $table->string('community');
             $table->rememberToken();
             $table->timestamps();
         });
