@@ -27,7 +27,7 @@ class RegistrationController extends Controller
             'password' => 'required|min:8',
             'age' => 'required|integer',
             'gender' =>  ['required', 'string', Rule::in(['female', 'male'])],
-            'community' => 'required|string'
+            'community_id' => 'required|exists:communities,id'
         ]);
 
         $user = User::create([
@@ -36,7 +36,7 @@ class RegistrationController extends Controller
             'password' => Hash::make($request->password),
             'age' => $request->age,
             'gender' =>  $request->gender,
-            'community' => $request->community,
+            'community_id' => $request->community_id,
         ]);
 
         try {
@@ -46,12 +46,13 @@ class RegistrationController extends Controller
             
             Mail::to("$user->email")->send(new RegistrationEmail($details));
         } catch (Exception $e) {
+            //no need to return an error because already the registration has been completed
         }
 
         return response()->json([
             'success' => true,
+            'message' => 'User registered succesfully, Use Login method to receive token.',
             'user' => $user->refresh(),
-            'message' => 'User registered succesfully, Use Login method to receive token.'
         ], 200);
     }
 }

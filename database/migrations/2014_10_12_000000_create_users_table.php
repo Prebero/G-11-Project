@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('community_id');
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -22,7 +23,6 @@ return new class extends Migration
             $table->unsignedInteger('age');
             $table->enum('gender',['female','male']);
             $table->enum('status',['active','blocked','deleted'])->default('active');
-            $table->string('community');
             $table->rememberToken();
             $table->timestamps();
         });

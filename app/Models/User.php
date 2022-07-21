@@ -24,8 +24,10 @@ class User extends Authenticatable
         'age',
         'gender',
         'status',
-        'community'
+        'community_id'
     ];
+
+    protected $appends = ['community_model'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -45,4 +47,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function community(){
+        return $this->belongsTo(Community::class);
+    }
+
+    public function getCommunityModelAttribute(){
+        return $this->community()->first();
+    }
 }
